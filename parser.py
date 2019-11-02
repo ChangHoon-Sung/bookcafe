@@ -42,6 +42,18 @@ class ISBN_Parser:
             #'대상' : info.READER[res['EA_ADD_CODE'][0]],
             'ISBN' : res['EA_ISBN']
         }
+    def get_bookinfo(self):
+        srch = list()
+        for w in '제목', '저자', '출판사':
+            print("\n%s을(를) 입력하세요\n%s > " % (w, w), end='')
+            srch.append(input())
+
+        fq = 'TITLE_NGRAM : "' + \
+            srch[0] + '" AND AUTHOR : "' + srch[1] + \
+            '" AND PUBLISHER : "' + srch[2] + '"'
+        data = 'start=0&fq_select: tSrch_author&detailSearchYn=Y&fq=' + fq
+
+        return self.parse(data)
         
       
       
