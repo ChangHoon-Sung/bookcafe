@@ -24,43 +24,51 @@ class Book_Parser:
                 totalCnt = json.loads(res.text)['response']['numFound']
                 docs = json.loads(res.text)['response']['docs']
 
-                print('\n\n')
-                print("총 %d개의 책을 찾았습니다." % totalCnt)
-                candidate = list()
-
-                
-                if(not totalCnt):
-                    print("<< 없거나 등록되지 않은 도서입니다. >>")
-
-                elif(totalCnt < 11):
-                    for idx in range(len(docs)):
-                        candidate.append(docs[idx])
-                    print("검색 결과 상위 10개 항목을 출력합니다.\n\n")
-
-                    for idx, b in enumerate(candidate):
-                        print("%d)" % (idx+1))
-                        self.print_book(b)
-
-                    print("원하는 도서의 번호를 입력해주세요.")
-                    print("ex)3번째 도서면 3 입력")
-                    print("선택 > ")
-
-                    sel = int(input())
-                    return self.simplify(candidate[sel-1])
-                else:
-                    print("찾는 도서가 너무 많습니다!\n수동으로 찾아주세요!")
-                
-                return dict()
-
         except Exception as e:
             print(e)
             print("파싱 중 에러 발생!")
+
+
+        print('\n\n')
+        print("총 %d개의 책을 찾았습니다." % totalCnt)
+        candidate = list()
+        
+        if(not totalCnt):
+            print("<< 없거나 등록되지 않은 도서입니다. >>")
+
+        elif(totalCnt > 11):
+            print("찾는 도서가 너무 많습니다!\n수동으로 찾아주세요!")
             return dict()
+
+        else:
+            for idx in range(len(docs)):
+                if not docs[idx]['EA_ADD_CODE']:
+                    candidate.append(None)
+                else:
+                    candidate.append(docs[idx])
+
+            print("검색 결과 상위 10개 항목을 출력합니다.\n\n")
+            for idx, b in enumerate(candidate):
+                print("%d)" % (idx+1))
+                if b:
+                    self.print_book(b)
+                else:
+                    print("세트 정보입니다.\n")
+
+            print("원하는 도서의 번호를 입력해주세요.")
+            print("ex)3번째 도서면 3 입력")
+            print("선택 > ")
+
+            sel = int(input())
+            return self.simplify(candidate[sel-1])
+
+
+        return dict()
 
 
     def print_book(self, book):
         data = [book['TITLE'], book['AUTHOR'], info.CATEGORY[book['EA_ADD_CODE'][2]],
-                book['PUBLISHER'], book['PUBLISH_PREDATE'], book['EA_ISBN']]
+            book['PUBLISHER'], book['PUBLISH_PREDATE'], book['EA_ISBN']]
 
         for s, d in zip(info.CONTENTS, data):
             print(s, d)
