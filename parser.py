@@ -25,12 +25,13 @@ class ISBN_Parser:
                 res = json.loads(res.text)['response']['docs'][0]
         except:
             print("파싱 중 에러 발생!")
-            return False
+    def print_book(self, book):
+        data = [book['TITLE'], book['AUTHOR'], info.CATEGORY[book['EA_ADD_CODE'][2]],
+                book['PUBLISHER'], book['PUBLISH_PREDATE'], book['EA_ISBN']]
 
-        # AUTHOR의 Value 예 -> '지은이(저자): 테드 창; 역자(옮긴이) 김상훈;'
-        # 추출할 작가 이름 테드 창
-        #sep1 = res['AUTHOR'].find(':')
-        #sep2 = res['AUTHOR'].find(';')
+        for s, d in zip(info.CONTENTS, data):
+            print(s, d)
+        print()
         
         self.book = {
             '제목' : res['TITLE'],
