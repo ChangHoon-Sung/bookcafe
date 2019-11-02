@@ -33,15 +33,18 @@ class ISBN_Parser:
             print(s, d)
         print()
         
-        self.book = {
-            '제목' : res['TITLE'],
-            '저자' : res['AUTHOR'],
-            '분류' : info.CATEGORY[res['EA_ADD_CODE'][2]],
-            '출판사' : res['PUBLISHER'],
-            '발행일' : res['PUBLISH_PREDATE'],
-            #'대상' : info.READER[res['EA_ADD_CODE'][0]],
-            'ISBN' : res['EA_ISBN']
+    def simplify(self, book):
+        simple = {
+        '제목' : book['TITLE'],
+        '저자' : book['AUTHOR'],
+        '분류' : info.CATEGORY[book['EA_ADD_CODE'][2]],
+        '출판사' : book['PUBLISHER'],
+        '발행일' : book['PUBLISH_PREDATE'],
+        'ISBN' : book['EA_ISBN']
         }
+        return simple
+    
+
     def get_bookinfo(self):
         srch = list()
         for w in '제목', '저자', '출판사':
