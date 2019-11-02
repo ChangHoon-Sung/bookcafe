@@ -12,7 +12,7 @@ def make_backup():
 
     try:
         shutil.copy2('./YJ_Book.csv', filename)
-    except FileExistsError:
+    except FileNotFoundError:
         print("백업 생성 실패!")
         print("백업할 파일이 없습니다.")
     except:
