@@ -1,3 +1,5 @@
+#-*- coding:utf-8 -*-
+
 import requests, json
 import info
 
@@ -24,21 +26,24 @@ class ISBN_Parser:
         except:
             print("파싱 중 에러 발생!")
             return False
+
+        # AUTHOR의 Value 예 -> '지은이(저자): 테드 창; 역자(옮긴이) 김상훈;'
+        # 추출할 작가 이름 테드 창
+        #sep1 = res['AUTHOR'].find(':')
+        #sep2 = res['AUTHOR'].find(';')
         
         self.book = {
             '제목' : res['TITLE'],
+            '저자' : res['AUTHOR'],
             '분류' : info.CATEGORY[res['EA_ADD_CODE'][2]],
-            '대상' : info.READER[res['EA_ADD_CODE'][0]],
             '출판사' : res['PUBLISHER'],
             '발행일' : res['PUBLISH_PREDATE'],
+            #'대상' : info.READER[res['EA_ADD_CODE'][0]],
             'ISBN' : res['EA_ISBN']
         }
         
-        # AUTHOR의 Value 예 -> '지은이(저자): 테드 창; 역자(옮긴이) 김상훈;'
-        # 추출할 작가 이름 테드 창
-        sep1 = res['AUTHOR'].find(':')
-        sep2 = res['AUTHOR'].find(';')
-        self.book['저자'] = res['AUTHOR'][sep1+2:sep2]
+      
+      
     
         return self.book
 
@@ -48,3 +53,4 @@ if __name__ == "__main__":
         b = p.parse_bookinfo(n)
         for k, v in b.items():
             print(k, v)
+        print()
