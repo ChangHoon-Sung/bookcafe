@@ -1,72 +1,69 @@
-import csv, shutil, datetime
+import csv, shutil
+import local, remote
 from parser import Book_Parser
 
-# 파일 쓰기
-fw = open('./YJ_Book.csv', 'a', encoding='euc-kr')
-writer = csv.writer(fw)
+# local = 1, remote = 2
+WORKSPACE = 1
 
-# 백업
-def make_backup():
-    today = datetime.datetime.now()
-    filename = './YJ_Book'+today.strftime('%Y-%m-%d %H:%M')+'.csv'
+def set_workspace():
+    global WORKSPACE
+    check = '✔'
 
-    try:
-        shutil.copy2('./YJ_Book.csv', filename)
-    except FileNotFoundError:
-        print("백업 생성 실패!")
-        print("백업할 파일이 없습니다.")
-    except:
-        print("알 수 없는 오류 발생!")
+    print("작업 환경을 설정합니다.")
+    print("1. [%c] 로컬PC (기본값) " % (check if WORKSPACE == 1 else ' '))
+    print("2. [%c] 구글 스프레드시트(온라인)" % (check if WORKSPACE == 2 else ' '))
+
+    while(True):
+        print("선택 > ", end = '')
+        try:
+            value = int(input())
+            if(not(1 <= value <= 2)):
+                raise Exception
+        except:
+            print("<< 잘못된 입력입니다 >>\n")
+        else:
+            WORKSPACE = value
+            break
+
+def set_worker():
+    global WORKSPACE
+    if WORKSPACE == 1:
+        return local.worker()
     else:
-        print("백업 파일이 생성되었습니다.")
-        print(filename)
-
-def print_book():
-    with open('./YJ_Book.csv', 'r', encoding='euc-kr') as fr:
-        reader = csv.reader(fr)
-        for line in reader:
-            print(line)
-
-def add_book(parser):   
-    b = parser.get_bookinfo()
-    if b:
-        new_book = [v for v in b.values()]
-
-        with open('./YJ_Book.csv', 'a', encoding='euc-kr') as fw:
-            writer = csv.writer(fw)
-            writer.writerow(new_book)
-        
-        print("\n새로운 책이 추가되었습니다.")
-        print("내용을 확인하세요.")
-
-        print(new_book)
+        return remote.worker()
 
 # Main
 def main():
     p = Book_Parser()
+    worker = local.worker()
 
     while(True):
         print("\n~ Book 관리 프로그램 ~")
         print("1. 도서 추가")
         print("2. DB 출력")
         print("3. 백업 생성")
-        print("4. 종료")
+        print("4. 작업 환경 설정")
+        print("5. 종료")
         print(">> ", end='')
 
         try:
             sel = int(input())
+            print()
         except:
             print("<< 잘못된 입력입니다. >>")
             continue
         if sel == 1:
-            add_book(p)
+            worker.add_book(p)
         elif sel == 2:
-            print_book()
+            worker.print_book()
         elif sel == 3:
-            make_backup()
+            worker.make_backup()
         elif sel == 4:
+            set_workspace()
+            worker = set_worker()
+            print("<< 설정이 완료되었습니다 >>\n")
+        elif sel == 5:
             print("<< 종료합니다 >>")
-            fw.close()
             break
         else:
             print("<< 메뉴에 없는 선택지 >>")
