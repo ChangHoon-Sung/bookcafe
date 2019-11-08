@@ -3,14 +3,15 @@ import csv
 import datetime
 
 class worker():
-    FILEPATH = os.getcwd() + '/YJ_Book.csv'
+    def __init__(self):
+        self.FILEPATH = os.getcwd() + '/YJ_Book.csv'
 
     def make_backup(self):
         today = datetime.datetime.now()
-        filename = FILEPATH[:-4]+today.strftime('%Y-%m-%d %H:%M')+'.csv'
+        filename = self.FILEPATH[:-4]+today.strftime('%Y-%m-%d %H:%M')+'.csv'
 
         try:
-            shutil.copy2(FILEPATH, filename)
+            shutil.copy2(self.FILEPATH, filename)
         except FileNotFoundError:
             print("백업 생성 실패!")
             print("백업할 파일이 없습니다.")
@@ -21,7 +22,7 @@ class worker():
             print(filename)
 
     def print_book(self):
-        with open(FILEPATH, 'r') as fr:
+        with open(self.FILEPATH, 'r') as fr:
             reader = csv.reader(fr)
             for line in reader:
                 print(line)
@@ -31,7 +32,7 @@ class worker():
         if b:
             new_book = [v for v in b.values()]
 
-            with open(FILEPATH, 'a') as fw:
+            with open(self.FILEPATH, 'a') as fw:
                 writer = csv.writer(fw)
                 writer.writerow(new_book)
             
