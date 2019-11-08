@@ -57,11 +57,10 @@ class Book_Parser:
 
             print("원하는 도서의 번호를 입력해주세요.")
             print("ex)3번째 도서면 3 입력")
-            print("선택 > ")
+            print("선택 > ", end = '')
 
             sel = int(input())
             return self.simplify(candidate[sel-1])
-
 
         return dict()
 
@@ -89,8 +88,12 @@ class Book_Parser:
     def get_bookinfo(self):
         srch = list()
         for w in '제목', '저자', '출판사':
-            print("\n%s을(를) 입력하세요\n%s > " % (w, w), end='')
-            srch.append(input())
+            print("\n%s을(를) 입력하세요. (0 입력시 종료)\n%s > " % (w, w), end='')
+            s = input()
+
+            if s == '0' or s == 0:
+                return None
+            srch.append(s)
 
         fq = 'TITLE_NGRAM : "' + \
             srch[0] + '" AND AUTHOR : "' + srch[1] + \
