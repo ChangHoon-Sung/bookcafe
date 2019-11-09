@@ -3,7 +3,7 @@ import local, remote
 from parser import Book_Parser
 
 # local = 1, remote = 2
-WORKSPACE = 1
+WORKSPACE = 2
 
 def set_workspace():
     global WORKSPACE
@@ -35,7 +35,7 @@ def set_worker():
 # Main
 def main():
     p = Book_Parser()
-    worker = local.worker()
+    worker = remote.worker()
 
     while(True):
         print("\n~ Book 관리 프로그램 ~")
