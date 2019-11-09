@@ -36,7 +36,7 @@ class Book_Parser:
         if(not totalCnt):
             print("<< 없거나 등록되지 않은 도서입니다. >>")
 
-        elif(totalCnt > 11):
+        elif(totalCnt > 21):
             print("찾는 도서가 너무 많습니다!\n수동으로 찾아주세요!")
             return dict()
 
@@ -47,7 +47,7 @@ class Book_Parser:
                 else:
                     candidate.append(docs[idx])
 
-            print("검색 결과 상위 10개 항목을 출력합니다.\n\n")
+            print("검색 결과 상위 20개 항목을 출력합니다.\n\n")
             for idx, b in enumerate(candidate):
                 print("%d)" % (idx+1))
                 if b:
@@ -98,7 +98,7 @@ class Book_Parser:
         fq = 'TITLE_NGRAM : "' + \
             srch[0] + '" AND AUTHOR : "' + srch[1] + \
             '" AND PUBLISHER : "' + srch[2] + '"'
-        data = 'start=0&fq_select: tSrch_author&detailSearchYn=Y&fq=' + fq
+        data = 'start=0&rows=20&fq_select: tSrch_author&detailSearchYn=Y&fq=' + fq
 
         return self.parse(data)
 
