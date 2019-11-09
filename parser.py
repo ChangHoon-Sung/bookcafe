@@ -36,7 +36,7 @@ class Book_Parser:
         if(not totalCnt):
             print("<< 없거나 등록되지 않은 도서입니다. >>")
 
-        elif(totalCnt > 11):
+        elif(totalCnt > 21):
             print("찾는 도서가 너무 많습니다!\n수동으로 찾아주세요!")
             return dict()
 
@@ -47,7 +47,7 @@ class Book_Parser:
                 else:
                     candidate.append(docs[idx])
 
-            print("검색 결과 상위 10개 항목을 출력합니다.\n\n")
+            print("검색 결과 상위 20개 항목을 출력합니다.\n\n")
             for idx, b in enumerate(candidate):
                 print("%d)" % (idx+1))
                 if b:
@@ -57,11 +57,17 @@ class Book_Parser:
 
             print("원하는 도서의 번호를 입력해주세요.")
             print("ex)3번째 도서면 3 입력")
-            print("선택 > ")
+            print("찾는 도서가 없으면 0번을 입력하세요.")
+            print("선택 > ", end = '')
 
             sel = int(input())
-            return self.simplify(candidate[sel-1])
 
+            if 1 <= sel <= len(candidate)+1:
+                return self.simplify(candidate[sel-1])
+            elif sel == 0:
+                print("입력 취소")
+            else:
+                print("잘못된 입력입니다.")
 
         return dict()
 
@@ -89,13 +95,17 @@ class Book_Parser:
     def get_bookinfo(self):
         srch = list()
         for w in '제목', '저자', '출판사':
-            print("\n%s을(를) 입력하세요\n%s > " % (w, w), end='')
-            srch.append(input())
+            print("\n%s을(를) 입력하세요. (0 입력시 종료)\n%s > " % (w, w), end='')
+            s = input()
+
+            if s == '0' or s == 0:
+                return None
+            srch.append(s)
 
         fq = 'TITLE_NGRAM : "' + \
             srch[0] + '" AND AUTHOR : "' + srch[1] + \
             '" AND PUBLISHER : "' + srch[2] + '"'
-        data = 'start=0&fq_select: tSrch_author&detailSearchYn=Y&fq=' + fq
+        data = 'start=0&rows=20&fq_select: tSrch_author&detailSearchYn=Y&fq=' + fq
 
         return self.parse(data)
 
