@@ -58,17 +58,20 @@ class Book_Parser:
             print("원하는 도서의 번호를 입력해주세요.")
             print("ex)3번째 도서면 3 입력")
             print("찾는 도서가 없으면 0번을 입력하세요.")
-            print("선택 > ", end = '')
-
-            sel = int(input())
-
-            if 1 <= sel <= len(candidate)+1:
-                return self.simplify(candidate[sel-1])
-            elif sel == 0:
-                print("입력 취소")
-            else:
-                print("잘못된 입력입니다.")
-
+            
+            while(True):
+                print("선택 > ", end = '')
+                try:
+                    sel = int(input())
+                except:
+                    print("잘못된 입력입니다.")
+                else:
+                    if 1 <= sel <= len(candidate):
+                        return self.simplify(candidate[sel-1])
+                    elif sel == 0:
+                        print("입력 취소")
+                        break
+                    
         return dict()
 
 
