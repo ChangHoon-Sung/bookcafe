@@ -27,6 +27,8 @@ READER = {
 CONTENTS = ['제목', '저자', '분류', '출판사', '발행일', 'ISBN']
 
 # input spreadsheet id and key(json) path here!
-SPREADSHEET_ID = ''
+SPREADSHEET_ID = None
 
-KEYPATH = ''
+SHEETNAME = None
+
+KEYPATH = None
