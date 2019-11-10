@@ -10,8 +10,8 @@ def set_workspace():
     check = '✔'
 
     print("작업 환경을 설정합니다.")
-    print("1. [%c] 로컬PC (기본값) " % (check if WORKSPACE == 1 else ' '))
-    print("2. [%c] 구글 스프레드시트(온라인)" % (check if WORKSPACE == 2 else ' '))
+    print("1. [%c] 로컬PC (기본값) " % (check if WORKSPACE is 1 else ' '))
+    print("2. [%c] 구글 스프레드시트(온라인)" % (check if WORKSPACE is 2 else ' '))
 
     while(True):
         print("선택 > ", end = '')
@@ -27,8 +27,9 @@ def set_workspace():
 
 def set_worker():
     global WORKSPACE
-    if WORKSPACE == 1:
-        return local.worker()
+    if WORKSPACE is 1:
+        fname = input("파일 이름을 지정해주세요.\n파일이름 > ")
+        return local.worker(fname)
     else:
         return remote.worker()
 
@@ -52,17 +53,17 @@ def main():
         except:
             print("<< 잘못된 입력입니다. >>")
             continue
-        if sel == 1:
+        if sel is 1:
             worker.add_book(p)
-        elif sel == 2:
+        elif sel is 2:
             worker.print_book()
-        elif sel == 3:
+        elif sel is 3:
             worker.make_backup()
-        elif sel == 4:
+        elif sel is 4:
             set_workspace()
             worker = set_worker()
             print("<< 설정이 완료되었습니다 >>\n")
-        elif sel == 5:
+        elif sel is 5:
             print("<< 종료합니다 >>")
             break
         else:
