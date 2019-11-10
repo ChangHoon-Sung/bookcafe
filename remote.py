@@ -71,4 +71,4 @@ class worker:
         print(URL)
 
     def make_backup(self):
-        print("준비중입니다!")
+        print("이 기능은 로컬 작업환경에서만 제공됩니다.")

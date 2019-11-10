@@ -47,7 +47,7 @@ class Book_Parser:
                 else:
                     candidate.append(docs[idx])
 
-            print("검색 결과 상위 20개 항목을 출력합니다.\n\n")
+            print("검색 결과 %d개 항목을 출력합니다.\n\n" % len(candidate))
             for idx, b in enumerate(candidate):
                 print("%d)" % (idx+1))
                 if b:
