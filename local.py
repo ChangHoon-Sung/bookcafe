@@ -3,8 +3,9 @@ import csv
 import datetime
 
 class worker():
-    def __init__(self):
-        self.FILEPATH = os.getcwd() + '/YJ_Book.csv'
+    def __init__(self, fname):
+        self.FILENAME = fname
+        self.FILEPATH = os.getcwd() + '/' + self.FILENAME + '.csv'
 
     def make_backup(self):
         today = datetime.datetime.now()
@@ -22,17 +23,20 @@ class worker():
             print(filename)
 
     def print_book(self):
-        with open(self.FILEPATH, 'r') as fr:
-            reader = csv.reader(fr)
-            for line in reader:
-                print(line)
+        if os.path.exists(self.FILEPATH):
+            with open(self.FILEPATH, 'r') as fr:
+                reader = csv.reader(fr)
+                for line in reader:
+                    print(line)
+        else:
+            print("파일이 생성되지 않았습니다.")
 
     def add_book(self, parser):   
         b = parser.get_bookinfo()
         if b:
             new_book = [v for v in b.values()]
 
-            with open(self.FILEPATH, 'a') as fw:
+            with open(self.FILEPATH, 'a+') as fw:
                 writer = csv.writer(fw)
                 writer.writerow(new_book)
             
